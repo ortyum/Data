@@ -46,11 +46,11 @@ def load_events(events: list[Event], overwrite: bool = False):
 
     conn = duckdb.connect(DB_PATH)
 
-    if overwrite:
-        conn.execute("DELETE FROM events")
-        logger.info("Cleared existing events")
-
     try:
+        if overwrite:
+            conn.execute("DELETE FROM events")
+            logger.info("Cleared existing events")
+
         for event in events:
             conn.execute(
                 """
