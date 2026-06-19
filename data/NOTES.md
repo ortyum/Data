@@ -13,6 +13,12 @@
    - LLM-ретраи (20.3% вызовов с ретраями, 281 ретраев всего)
    - Агрегаты по моделям (вызовы, токены, среднее)
 6. Качество парсинга: 99.8% (4/2296 битые строки)
+7. Тесты (5 тестов, 100% pass rate):
+   - test_parser_handles_malformed_json — обработка битых строк
+   - test_parser_empty_lines — пропуск пустых строк
+   - test_parser_quality_metric — расчёт метрики качества
+   - test_stage_duration_percentiles — p50/p95 по этапам
+   - test_error_rate_calculation — доля ошибок
 
 ## Решения и допущения
 - **Структура кода:** schemas.py отделена от ingest/loader для избежания циркулярных импортов
@@ -22,7 +28,6 @@
 - **Overwrite:** первый запуск ingest очищает таблицу (удобнее для тестирования), дальше ON CONFLICT не дублирует
 
 ## Что не успел / сделал бы дальше
-- Тесты: test_parser.py (валидация на битых строках), test_metrics.py (одна метрика)
 - GitHub Actions CI/CD (lint + ingest/report на синтетике)
 - Docker для воспроизводимого пайплайна
 - Инкрементальная загрузка по дате файла
@@ -33,3 +38,4 @@
 - Метрики: `python -m analytics.report` → все 4 отчёта выводятся
 - DuckDB: `SELECT COUNT(*), COUNT(DISTINCT task_id) FROM events` → 2292 events, 150 tasks
 - Идемпотентность: повторный `ingest` не дублирует (проверено ON CONFLICT)
+- Тесты: `pytest analytics/tests/ -v` → 5/5 passed
