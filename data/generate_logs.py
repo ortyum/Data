@@ -75,7 +75,6 @@ def gen(n_tasks: int):
         if random.random() < 0.03:
             lines.append('{"ts": "2026-06-01T10:00:00+03:00", "event": "stage_en')
 
-    random.shuffle  # порядок в файле в целом хронологический; не перемешиваем
     return lines
 
 
