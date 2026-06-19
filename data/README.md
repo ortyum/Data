@@ -47,11 +47,51 @@ Fluent Bit. Сейчас логи никак не анализируются —
 
 ## Запуск
 
+### Подготовка окружения
 ```bash
-pip install duckdb            # либо psycopg для Postgres
-python generate_logs.py --tasks 300        # при желании больше данных
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Полный пайплайн
+```bash
+source venv/bin/activate
+
+# Генерировать логи (опционально, уже есть sample_logs/)
+python generate_logs.py --tasks 300
+
+# Парсить логи и загрузить в DuckDB
 python -m analytics.ingest sample_logs/
+
+# Вывести метрики
 python -m analytics.report
+```
+
+### Пример вывода
+```
+=== Stage Duration Metrics (p50/p95) ===
+completeness    p50= 4272.0ms  p95= 8399.7ms  (n=143)
+matching        p50= 4291.0ms  p95= 8385.0ms  (n=141)
+preprocess      p50= 4655.0ms  p95= 7980.2ms  (n=149)
+
+=== Error Rates ===
+Failed tasks: 9/150 (6.0%)
+
+Top error types:
+  ParseError: 4
+  LLMTimeout: 3
+  ValidationError: 2
+
+=== LLM Retry Metrics ===
+Total LLM calls: 1108
+Retried calls: 225 (20.3%)
+Total retries: 281
+
+=== Model Aggregates ===
+qwen-72b        calls= 403  tokens=  853602  avg= 2118
+gpt-4o-mini     calls= 364  tokens=  752660  avg= 2068
+gemini-flash    calls= 341  tokens=  710466  avg= 2083
 ```
 
 ## Критерии приёмки
