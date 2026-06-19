@@ -47,39 +47,21 @@ Fluent Bit. Сейчас логи никак не анализируются —
 
 ## Запуск
 
-### Подготовка окружения
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
 
-### Полный пайплайн
-```bash
-source venv/bin/activate
-
-# Генерировать логи (опционально, уже есть sample_logs/)
-python generate_logs.py --tasks 300
-
-# Парсить логи и загрузить в DuckDB
+python generate_logs.py --tasks 300        # при желании больше данных
 python -m analytics.ingest sample_logs/
-
-# Вывести метрики
 python -m analytics.report
-```
 
-### Тесты
-```bash
-source venv/bin/activate
-
-# Запустить все тесты
+# Тесты
 pytest analytics/tests/ -v
-
-# Или с покрытием (если установлен pytest-cov)
-pytest analytics/tests/ --cov=analytics --cov-report=term
 ```
 
 ### Пример вывода
+
 ```
 === Stage Duration Metrics (p50/p95) ===
 completeness    p50= 4272.0ms  p95= 8399.7ms  (n=143)
