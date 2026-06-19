@@ -68,6 +68,17 @@ python -m analytics.ingest sample_logs/
 python -m analytics.report
 ```
 
+### Тесты
+```bash
+source venv/bin/activate
+
+# Запустить все тесты
+pytest analytics/tests/ -v
+
+# Или с покрытием (если установлен pytest-cov)
+pytest analytics/tests/ --cov=analytics --cov-report=term
+```
+
 ### Пример вывода
 ```
 === Stage Duration Metrics (p50/p95) ===
